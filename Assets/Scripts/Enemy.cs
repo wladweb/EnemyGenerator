@@ -1,18 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private float _speed = 2;
+
+    private Vector3 _destination;
+
+    private void Awake()
     {
-        
+        _destination = Random.insideUnitCircle * 100;
+        Destroy(gameObject, 10f);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        Move();
+    }
+
+    public void Move()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, _destination, _speed * Time.deltaTime);
     }
 }

@@ -1,18 +1,44 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
 public class SpawnSystem : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private SpawnPoint[] _spawnPoints;
+    private int _currentIndex;
+
+    private int CurrentIndex
     {
-        
+        get
+        {
+            return _currentIndex;
+        }
+        set
+        {
+            if (value >= _spawnPoints.Length)
+            {
+                _currentIndex = 0;
+            }
+            else
+            {
+                _currentIndex = value;
+            }
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        _spawnPoints = transform.GetComponentsInChildren<SpawnPoint>();
+        StartCoroutine(Spawn());
+    }
+
+    private IEnumerator Spawn()
+    {
+        while (true)
+        {
+            SpawnPoint spawnPoint = _spawnPoints[CurrentIndex++];
+            spawnPoint.SpawnEnemy();
+
+            yield return new WaitForSeconds(2);
+        }
     }
 }
